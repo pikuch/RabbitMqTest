@@ -17,17 +17,20 @@ public static class Program
         using IModel channel = connection.CreateModel();
 
         channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-        channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
         channel.QueueBind(queueName, exchangeName, "", null);
-        
+
+        IBasicProperties props = channel.CreateBasicProperties();
+        props.DeliveryMode = 1;
+
         byte[] buffer = new byte[1];
         int counter = 0;
 
         while (counter > 0)
         {
             buffer[0] = (byte)counter++;
-            channel.BasicPublish(exchangeName, "", null, buffer);
-            Thread.Sleep(5000);
+            channel.BasicPublish(exchangeName, "", props, buffer);
+            Thread.Sleep(1000);
         }
 
         channel.Close();
