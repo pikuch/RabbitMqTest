@@ -25,12 +25,18 @@ public static class Program
 
         byte[] buffer = new byte[1];
         int counter = 0;
+        //int sleepPeriod = 40;
 
-        while (counter > 0)
+        while (counter >= 0)
         {
             buffer[0] = (byte)counter++;
+            //if (sleepPeriod > 0 && buffer[0] == 0)
+            //{
+            //    sleepPeriod--;
+            //    Console.WriteLine($"Posting speed increased to once every {sleepPeriod} ms");
+            //}
             channel.BasicPublish(exchangeName, "", props, buffer);
-            Thread.Sleep(1000);
+            //Thread.Sleep(sleepPeriod);
         }
 
         channel.Close();

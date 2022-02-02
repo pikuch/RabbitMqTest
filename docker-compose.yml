@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  rabbitmqconsumer:
+    image: ${DOCKER_REGISTRY-}rabbitmqconsumer
+    build:
+      context: .
+      dockerfile: RabbitMqConsumer/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  rabbitmqproducer:
+    image: ${DOCKER_REGISTRY-}rabbitmqproducer
+    build:
+      context: .
+      dockerfile: RabbitMqProducer/Dockerfile
+    depends_on:
+      - rabbitmqconsumer
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 15672:15672
+        - 5672:5672

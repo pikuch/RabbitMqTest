@@ -25,7 +25,7 @@ public static class Program
         consumer.Received += (ch, ea) =>
         {
             var body = ea.Body.ToArray();
-            Console.WriteLine($"Received {body}");
+            //Console.WriteLine($"Received {body[0]}");
         };
 
         string consumerTag = channel.BasicConsume(queueName, autoAck: true, consumer);
